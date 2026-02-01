@@ -8,6 +8,8 @@ const apiClient = axios.create({
   }
 })
 
+
+
 const APIAuthenticatedClient = axios.create({
     baseURL: 'http://localhost:3000/api',
     headers:{
@@ -15,6 +17,7 @@ const APIAuthenticatedClient = axios.create({
       Accept: "application/json"
     }
 })
+
 
 APIAuthenticatedClient.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
