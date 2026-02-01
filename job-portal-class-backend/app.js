@@ -1,12 +1,22 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 
 // Dotenv configuration
 require('dotenv').config();
 
 // parse json data
 app.use(express.json())
+
+app.use(cors({
+    origin: ['http://localhost:5173',"http://localhost:3000","https://test.com"], // frontend URL
+}));
+
+
 app.use(express.urlencoded({ extended: true }))
+
+
+
 
 
 // Db connection
@@ -30,14 +40,13 @@ const userRoutes = require("./routes/userRoutes")
 app.use("/api/users", userRoutes)
 
 
-
 const jobRoute = require("./routes/jobRoutes");
 app.use("/api/jobs", jobRoute)
 
 const applicationRoute = require("./routes/applicationRoutes");
 app.use("/api/applications", applicationRoute)
 
-const port = process.env.PORT
+const port = 3000
 app.listen(port, () => {
     console.log(`Server is running on port ${port}.`);
 })
