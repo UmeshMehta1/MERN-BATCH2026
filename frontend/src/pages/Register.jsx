@@ -2,8 +2,8 @@ import React from 'react'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { registerUser } from '../store/authSlice'
-    
-
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 
 const Register = () => {
@@ -12,7 +12,10 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
+  const  authState= useSelector((state)=>state.auth);
+  
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -27,9 +30,13 @@ const Register = () => {
 
         dispatch(registerUser(data));
 
+        if(authState.loading === "idle" && authState.error === null){
+          navigate("/login");
+        }
+
     }
 
-
+    
 
   return (
    <div className="min-h-screen flex items-center justify-center bg-gray-100">
@@ -37,7 +44,6 @@ const Register = () => {
     <h2 className="text-2xl font-bold text-center mb-6">Create Account</h2>
 
     <form onSubmit={handleSubmit} className="space-y-4">
-    
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Username

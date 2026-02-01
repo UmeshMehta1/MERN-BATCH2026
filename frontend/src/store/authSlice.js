@@ -19,8 +19,6 @@ const authSlice = createSlice({
         token:"",
         error:null
     },
-
-
     reducers:{
         setAuthenticated(state, action){
             state.isAuthenticated = action.payload;
@@ -40,7 +38,17 @@ const authSlice = createSlice({
 
       setToken(state, action){
         state.token = action.payload;
+      },
+
+
+      logoutUser(state){
+        state.isAuthenticated = false;
+        state.data = [];
+        state.token = "";
+        localStorage.removeItem("token");
       }
+
+
 
     }
 })
@@ -73,6 +81,7 @@ export function registerUser(userData){
         if(response.status === 201){
             dispatch(setData(response.data))
 
+
             alert("Registration successful! Please login.");
         }else{
             dispatch (setError("Registration failed"));
@@ -85,7 +94,7 @@ export function registerUser(userData){
     }
 }
 
-
+//login user thunk
 export function loginUser(userData){
     return async function loginUserThunk(dispatch){
         dispatch(setLoading(STATUS.LOADING));
@@ -98,13 +107,15 @@ export function loginUser(userData){
 
      try{
         const response = await apiClient.post("/auth/login",userData)
-
-        if(response.status === 200){
+        
+        if(response.status === 201){
+            alert("Login successful!");
             dispatch(setData(response.data.user))
             dispatch(setToken(response.data.token))
             dispatch(setAuthenticated(true))
             localStorage.setItem("token", response.data.token);
         }else{
+            alert("Login failed! Please check your credentials.");
             dispatch (setError("Login failed"));
             dispatch(setLoading(STATUS.ERROR));
         }
