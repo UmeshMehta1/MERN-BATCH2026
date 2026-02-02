@@ -14,7 +14,7 @@ const authSlice = createSlice({
     name: "auth",
     initialState: {
         isAuthenticated: false,
-        data:[],             
+        data: JSON.parse(localStorage.getItem("user")) || [],             
         loading: STATUS.IDLE,
         token:"",
         error:null
@@ -26,6 +26,8 @@ const authSlice = createSlice({
 
         setData(state, action){
             state.data = action.payload;
+            localStorage.setItem("user", JSON.stringify(action.payload));
+            state.isAuthenticated = true;
         },
 
       setLoading(state, action){
@@ -40,6 +42,8 @@ const authSlice = createSlice({
         state.token = action.payload;
       },
 
+    
+
 
       logoutUser(state){
         state.isAuthenticated = false;
@@ -49,12 +53,11 @@ const authSlice = createSlice({
       }
 
 
-
     }
 })
 
 
-export const {setAuthenticated, setData, setLoading, setError, setToken} = authSlice.actions;
+export const {setAuthenticated, setData, setLoading, setError, setToken,  logoutUser} = authSlice.actions;
 
 export default authSlice.reducer;
 
@@ -98,8 +101,10 @@ export function registerUser(userData){
 export function loginUser(userData){
     return async function loginUserThunk(dispatch){
         dispatch(setLoading(STATUS.LOADING));
+        alert("Login function called");
 
-     if(!userData.email || !userData.password){
+     if(!userData.userEmail || !userData.userPassword){
+        alert("Email and Password are required");
         dispatch(setError("Email and Password are required"));
         dispatch(setLoading(STATUS.ERROR));
         return;
@@ -107,8 +112,9 @@ export function loginUser(userData){
 
      try{
         const response = await apiClient.post("/auth/login",userData)
-        
-        if(response.status === 201){
+        alert("Login request sent");
+        console.log("Login response:", response);
+        if(response.status === 200){
             alert("Login successful!");
             dispatch(setData(response.data.user))
             dispatch(setToken(response.data.token))

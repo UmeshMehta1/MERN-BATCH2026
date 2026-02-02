@@ -1,8 +1,24 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-
+import { useDispatch } from 'react-redux';
+import { logoutUser } from '../store/authSlice';
+// import { useNavigate } from 'react-router-dom';
 const Navbar = () => {
-    const { isAuthenticated, user } = useSelector((state) => state.auth);
+
+ 
+  const dispatch = useDispatch();
+    const { isAuthenticated, data } = useSelector((state) => state.auth);
+//  const navigate = useNavigate();
+
+    const handleLogout = () => {
+        // Implement logout functionality here
+        console.log("Logout clicked");
+        dispatch(logoutUser() );
+    }
+
+    // const handleDashboard = () => {
+    //   navigate("/job-provider-dashboard");
+    // }
 
   return (
   <nav className="bg-white shadow-md">
@@ -14,18 +30,27 @@ const Navbar = () => {
           Job<span className="text-gray-800">Portal</span>
         </span>
       </div>
+      {isAuthenticated && (
+        <>
+         <div className="text-gray-700">Welcome, {data.username}</div>
+        <button onClick={handleDashboard}>dashboard</button>
+        </>
+       
+      )}
       {/* Desktop Menu */}
       <div className="hidden md:flex items-center gap-4">
         {/* Before Login */}
 
-     {!isAuthenticated && (<>
+      
+
+     {!isAuthenticated ? (<>
      <a href="/login" className="px-4 py-2 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50">
           Login
         </a>
         <a href="/register" className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
           Register
         </a>
-     </>)?(<>Logout</>):null}    
+     </>) : (<button onClick={handleLogout} className="px-4 py-2 border border-red-600 text-red-600 rounded-lg hover:bg-red-50">Logout</button>)}
 
 
         {/* After Login (Show conditionally) */}

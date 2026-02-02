@@ -1,37 +1,72 @@
 import React from 'react'
+import { APIAuthenticatedClient } from '../api';
 
 const JobCreateForm = () => {
+
+    const [compnayName, setCompanyName] = React.useState('');
+    const [jobTitle, setJobTitle] = React.useState('');
+    const [jobDescription, setJobDescription] = React.useState('');
+    const [jobLocation, setJobLocation] = React.useState('');
+    const [jobSalary, setJobSalary] = React.useState('');
+  
+  const handleSubmit = async(e) => {
+    e.preventDefault();
+    // Handle form submission logic here
+
+    const jobData = {
+      jobCompany: compnayName,
+      jobTitle: jobTitle,
+      jobDescription: jobDescription,
+      jobLocation: jobLocation,
+      jobSalary: jobSalary
+    };
+
      
+    const response = await APIAuthenticatedClient.post("/jobs/createjob", jobData);
+    console.log("Job creation response:", response);
+    console.log("Job created successfully:", response.data);
+    if(response.status === 201){
+      alert("Job created successfully");
+      // Clear form fields
+      setCompanyName('');
+      setJobTitle('');
+      setJobDescription('');
+      setJobLocation('');
+      setJobSalary('');
+    }
+
+  }
+
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
   <div className="bg-white w-full max-w-lg p-6 rounded-xl shadow">
     <h2 className="text-2xl font-bold mb-6 text-center">Create Job</h2>
-    <form className="space-y-4">
+    <form onSubmit={handleSubmit} className="space-y-4">
       {/* Job Title */}
       <div>
         <label className="block text-sm font-medium mb-1">Job Title</label>
-        <input type="text" className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500" placeholder="Frontend Developer" />
+        <input value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} type="text" className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500" placeholder="Frontend Developer" />
       </div>
       {/* Company */}
       <div>
         <label className="block text-sm font-medium mb-1">Company Name</label>
-        <input type="text" className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500" placeholder="ABC Pvt. Ltd." />
+        <input value={compnayName} onChange={(e) => setCompanyName(e.target.value)} type="text" className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500" placeholder="ABC Pvt. Ltd." />
       </div>
       {/* Job Description */}
       <div>
         <label className="block text-sm font-medium mb-1">Job Description</label>
-        <textarea rows={4} className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500" placeholder="Describe job role..." defaultValue={""} />
+        <textarea value={jobDescription} onChange={(e) => setJobDescription(e.target.value)} rows={4} className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500" placeholder="Describe job role..." />
       </div>
       {/* Location */}
       <div>
         <label className="block text-sm font-medium mb-1">Job Location</label>
-        <input type="text" className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500" placeholder="Kathmandu" />
+        <input value={jobLocation} onChange={(e) => setJobLocation(e.target.value)} type="text" className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500" placeholder="Kathmandu" />
       </div>
       {/* Salary */}
       <div>
         <label className="block text-sm font-medium mb-1">Salary</label>
-        <input type="number" className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500" placeholder={80000} />
+        <input value={jobSalary} onChange={(e) => setJobSalary(e.target.value)} type="number" className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500" placeholder={80000} />
       </div>
       {/* Submit */}
       <button type="submit" className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700">

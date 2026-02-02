@@ -12,7 +12,11 @@ const Login = () => {
 
     const dispatch = useDispatch();
     const authState = useSelector((state) => state.auth);
+
+
     const navigate = useNavigate();
+
+
         const handleSubmit = (e) => {
             e.preventDefault();
             // Handle registration logic here
@@ -31,7 +35,6 @@ const Login = () => {
     
         }
     
-
 
   return (
      <div className="min-h-screen flex items-center justify-center bg-gray-100">

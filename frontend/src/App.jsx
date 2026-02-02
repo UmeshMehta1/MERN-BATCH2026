@@ -12,10 +12,10 @@ import JobCreateForm from './pages/JobCreateForm'
 const App = () => {
   return (
     <div>
-    
+      <Navbar/>
       <BrowserRouter>
 
-     <Navbar/>
+   
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/about' element={<About/>}/>
@@ -25,11 +25,6 @@ const App = () => {
         <Route path="/create-job" element={<JobCreateForm/>}/>
       </Routes>
       </BrowserRouter>
-
-
-
-
-
     </div>
   )
 }
