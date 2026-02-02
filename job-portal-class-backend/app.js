@@ -37,7 +37,7 @@ initializeApp().catch(err => {
 
 // Routes
 const userRoutes = require("./routes/userRoutes")
-app.use("/api/users", userRoutes)
+app.use("/api/auth", userRoutes)
 
 
 const jobRoute = require("./routes/jobRoutes");
