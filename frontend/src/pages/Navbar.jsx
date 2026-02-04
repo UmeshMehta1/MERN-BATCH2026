@@ -2,10 +2,9 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux';
 import { logoutUser } from '../store/authSlice';
+import { Link} from 'react-router-dom';
 // import { useNavigate } from 'react-router-dom';
 const Navbar = () => {
-
- 
   const dispatch = useDispatch();
     const { isAuthenticated, data } = useSelector((state) => state.auth);
 //  const navigate = useNavigate();
@@ -17,7 +16,7 @@ const Navbar = () => {
     }
 
     // const handleDashboard = () => {
-    //   navigate("/job-provider-dashboard");
+    //   Navigate("/dashboard");
     // }
 
   return (
@@ -32,8 +31,11 @@ const Navbar = () => {
       </div>
       {isAuthenticated && (
         <>
+        <Link to="/" className="text-gray-700 mr-4">Home</Link>
          <div className="text-gray-700">Welcome, {data.username}</div>
-        <button onClick={handleDashboard}>dashboard</button>
+        <Link to="/job-provider-dashboard" className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+          Dashboard
+        </Link>
         </>
        
       )}

@@ -75,7 +75,7 @@ export function registerUser(userData){
 
      try{
       
-        const response = await apiClient.post("/users/register",userData)
+        const response = await apiClient.post("/auth/register",userData)
 
          console.log("hello")
 
@@ -111,7 +111,8 @@ export function loginUser(userData){
      }
 
      try{
-        const response = await apiClient.post("/auth/login",userData)
+        alert("Sending login request");
+          const response = await apiClient.post("/auth/login",userData)
         alert("Login request sent");
         console.log("Login response:", response);
         if(response.status === 200){

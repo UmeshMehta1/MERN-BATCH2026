@@ -1,6 +1,6 @@
 import React from 'react'
 import { APIAuthenticatedClient } from '../api';
-
+import { useNavigate } from 'react-router-dom';
 const JobCreateForm = () => {
 
     const [compnayName, setCompanyName] = React.useState('');
@@ -8,33 +8,32 @@ const JobCreateForm = () => {
     const [jobDescription, setJobDescription] = React.useState('');
     const [jobLocation, setJobLocation] = React.useState('');
     const [jobSalary, setJobSalary] = React.useState('');
+    const navigate = useNavigate();
   
   const handleSubmit = async(e) => {
     e.preventDefault();
-    // Handle form submission logic here
+    
+    try {
+      const jobData = {
+        jobCompany: compnayName,
+        jobTitle: jobTitle,
+        jobDescription: jobDescription,
+        jobLocation: jobLocation,
+        jobSalary: jobSalary
+      };
 
-    const jobData = {
-      jobCompany: compnayName,
-      jobTitle: jobTitle,
-      jobDescription: jobDescription,
-      jobLocation: jobLocation,
-      jobSalary: jobSalary
-    };
+      const response = await APIAuthenticatedClient.post("/jobs/createjob", jobData);
+      console.log("Job creation response:", response);
+      
+      if(response.status === 201){
+        alert("Job created successfully");
+        navigate("/");
 
-     
-    const response = await APIAuthenticatedClient.post("/jobs/createjob", jobData);
-    console.log("Job creation response:", response);
-    console.log("Job created successfully:", response.data);
-    if(response.status === 201){
-      alert("Job created successfully");
-      // Clear form fields
-      setCompanyName('');
-      setJobTitle('');
-      setJobDescription('');
-      setJobLocation('');
-      setJobSalary('');
+      }
+    } catch(error) {
+      console.error("Error creating job:", error);
+      alert(error.response?.data?.message || "Failed to create job. Please try again.");
     }
-
   }
 
 
