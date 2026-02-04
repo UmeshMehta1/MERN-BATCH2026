@@ -5,9 +5,16 @@ const bcrypt = require('bcrypt');
 
 
 const seedAdminUser = async () => {
+    const adminEmail = process.env.ADMIN_EMAIL?.trim();
+    const adminPassword = process.env.ADMIN_PASSWORD?.trim();
+
+    if (!adminEmail || !adminPassword) {
+        console.log("Admin email or password not found in .env");
+        return;
+    }
 
     const userAdmin = await User.findOne({
-        where: { userEmail: process.env.ADMIN_EMAIL }
+        where: { userEmail: adminEmail }
     })
 
     // If admin user already exists, do not create again
@@ -19,8 +26,8 @@ const seedAdminUser = async () => {
     // Create admin user
     await User.create({
         username: "bishalrijal",
-        userEmail: process.env.ADMIN_EMAIL,
-        userPassword: bcrypt.hashSync(process.env.ADMIN_PASSWORD, 10),
+        userEmail: adminEmail,
+        userPassword: bcrypt.hashSync(adminPassword, 10),
         userRole: "jobProvider"
     })
     console.log("Admin user created successfully!");

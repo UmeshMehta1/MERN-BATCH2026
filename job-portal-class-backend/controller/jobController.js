@@ -24,30 +24,50 @@ const createJob = async (req, res) => {
 // get all jobs
 
 const getAllJobs = async (req, res)=>{
-
-        const jobs = await Jobs.findAll({
+    const jobs = await Job.findAll({
         include: {
             model: User,
             attributes: ["id", "username", "userEmail"]
         }
     });
-    if(jobs.length ===0){
-        return res.status(400).json({
+    
+    if(jobs.length === 0){
+        return res.status(404).json({
             message: "No jobs available"
         })
     }
+    
     res.status(200).json({
         data: jobs
     })
+}
 
-    res.status(500).json({
-        message: "Server error",
-        error: error.message
-    })
+
+const getJobById = async (req, res) => {
+    const jobId = req.params.id;
+
+    const job = await Job.findByPk(jobId, {
+        include: {
+            model: User,
+            attributes: ["id", "username", "userEmail"]
+        }
+    });
+
+    if (!job) {
+        return res.status(404).json({
+            message: "Job not found"
+        });
+    }
+
+    res.status(200).json({
+        data: job
+    });
 }
 
 
 module.exports = {
     createJob,
-    getAllJobs
+    getAllJobs,
+    getJobById
+
 }

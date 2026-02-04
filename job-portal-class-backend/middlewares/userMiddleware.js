@@ -6,13 +6,18 @@ const { User } = require('../model');
 const isAuthenticated = (req, res, next) => {
 
     // token receive
-    const token = req.headers.authorization
+    let token = req.headers.authorization
 
     // token check
     if (!token) {
         return res.status(400).json({
             message: "Unauthorized access"
         })
+    }
+
+    // Remove 'Bearer ' prefix if present
+    if (token.startsWith('Bearer ')) {
+        token = token.slice(7)
     }
 
     // token verify
