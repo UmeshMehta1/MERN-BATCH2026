@@ -9,11 +9,14 @@ require('dotenv').config();
 app.use(express.json())
 
 app.use(cors({
-    origin: ['http://localhost:5173',"http://localhost:3000","https://test.com"], // frontend URL
+    origin: "http://localhost:5173", // frontend URL
+    credentials: true, // Allow cookies and authorization headers
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 
-app.use(express.urlencoded({ extended: true }))
+// app.use(express.urlencoded({ extended: true }))
 
 
 
@@ -45,6 +48,10 @@ app.use("/api/jobs", jobRoute)
 
 const applicationRoute = require("./routes/applicationRoutes");
 app.use("/api/applications", applicationRoute)
+
+const paymentRoute = require("./routes/paymentRoute");
+app.use("/api/payments", paymentRoute)
+
 
 const port = 3000
 app.listen(port, () => {
